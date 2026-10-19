@@ -61,3 +61,10 @@ Steps:
        7.2 Monitor the pipeline stages and fix any issues that arise.
 
 This end-to-end Jenkins pipeline will automate the entire CI/CD process for a Java application, from code checkout to production deployment, using popular tools like SonarQube, Argo CD, Helm, and Kubernetes.
+
+
+## Current pipeline implementation and prerequisites
+
+The Jenkins pipeline definition is at [spring-boot-app/JenkinsFile](spring-boot-app/JenkinsFile). It builds/tests the Spring Boot app, runs SonarQube analysis, builds and pushes a Docker image, and updates the deployment manifest image tag. Configure a trusted HTTPS SonarQube endpoint using the SONAR_URL build parameter. Configure the Docker Hub credential ID docker-cred and the GitHub token credential ID github in Jenkins. The token needs only the repository permissions required to update the deployment manifest.
+
+The pipeline requires a Jenkins agent with Java/Maven, Docker Pipeline support, and access to a Docker daemon. Mounting the host Docker socket gives the agent substantial host-level control; use a dedicated, isolated agent and do not run untrusted jobs on it. No live Jenkins, SonarQube, registry, or Kubernetes execution is asserted by this repository documentation.
